@@ -751,3 +751,4 @@ public class Config {
 		return getCon("config_dict_charset", "UTF-8");
 	}
 }
+
