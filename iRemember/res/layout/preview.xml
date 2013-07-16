@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/LinearLayout03"
+        android:layout_width="fill_parent"
+        android:layout_height="0sp"
+        android:layout_weight="1"
+        android:isScrollContainer="true"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/TextView01"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="30dip"
+            android:text="@+id/TextView01"
+            android:textColor="#fff"
+            android:textSize="30dip" >
+        </TextView>
+
+        <TextView
+            android:id="@+id/TextView02"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="20dip"
+            android:text="@+id/TextView02"
+            android:textColor="#fff666"
+            android:textSize="20dip" >
+        </TextView>
+
+        <ScrollView
+            android:id="@+id/ScrollView02"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="0.93" >
+
+            <LinearLayout
+                android:id="@+id/LinearLayout04"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/TextView03"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10sp"
+                    android:text="@+id/TextView03"
+                    android:textColor="#fff"
+                    android:textSize="20dip" >
+                </TextView>
+
+                <TextView
+                    android:id="@+id/TextView04"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="5dip"
+                    android:paddingLeft="10dip"
+                    android:paddingRight="10dip"
+                    android:paddingTop="5dip"
+                    android:text="@+id/TextView04"
+                    android:textSize="18dip" >
+                </TextView>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/LinearLayout02"
+        style="@android:style/ButtonBar"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:background="#0000"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/Button01"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@+id/Button01" >
+        </Button>
+        <!-- android:visibility="gone" -->
+
+        <Button
+            android:id="@+id/ButtonPreWord"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:text="@+id/ButtonPreWord" >
+        </Button>
+
+        <ImageButton
+            android:id="@+id/ImageButton01"
+            android:layout_width="40px"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:src="@drawable/volume" >
+        </ImageButton>
+
+        <Button
+            android:id="@+id/Button02"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@+id/Button02" >
+        </Button>
+    </LinearLayout>
+
+</LinearLayout>
