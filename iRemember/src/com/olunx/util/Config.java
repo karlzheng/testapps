@@ -133,6 +133,8 @@ public class Config {
 			String soundFile = SDCARD_SOUND_PATH + "读我.txt";
 			String stardictFile = SDCARD_STARDICT_PATH + "读我.txt";
 			
+			String stardict_babylon_dir = SDCARD_STARDICT_PATH + "stardict-babylon-WordNet-2.4.2/";
+			
 			try {
 				Utils.init().copyFile(context.getAssets().open("dicts/cet4.csv"), cet4File);
 				Utils.init().copyFile(context.getAssets().open("dicts/cet6.csv"), cet6File);
@@ -141,7 +143,14 @@ public class Config {
 				Utils.init().copyFile(context.getAssets().open("dicts/yasi.csv"), yasiFile);
 				
 				Utils.init().copyFile(context.getAssets().open("zh-cn/readme_sound.txt"), soundFile);
+
 				Utils.init().copyFile(context.getAssets().open("zh-cn/readme_stardict.txt"), stardictFile);
+				
+				Utils.init().copyFile(context.getAssets().open("dicts/stardict-babylon-WordNet-2.4.2/WordNet.syn"), stardict_babylon_dir+"WordNet.syn");
+				Utils.init().copyFile(context.getAssets().open("dicts/stardict-babylon-WordNet-2.4.2/WordNet.ifo"), stardict_babylon_dir+"WordNet.ifo");
+				Utils.init().copyFile(context.getAssets().open("dicts/stardict-babylon-WordNet-2.4.2/WordNet.idx"), stardict_babylon_dir+"WordNet.idx");
+				Utils.init().copyFile(context.getAssets().open("dicts/stardict-babylon-WordNet-2.4.2/WordNet.idx.idx"), stardict_babylon_dir+"WordNet.idx.idx");
+				Utils.init().copyFile(context.getAssets().open("dicts/stardict-babylon-WordNet-2.4.2/WordNet.dict.dz"), stardict_babylon_dir+"WordNet.dict.dz");
 				
 			} catch (IOException e) {
 				e.printStackTrace();
