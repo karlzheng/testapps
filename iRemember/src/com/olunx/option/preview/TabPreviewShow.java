@@ -6,12 +6,6 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import com.olunx.R;
-import com.olunx.stardict.SeekWord;
-import com.olunx.util.Config;
-import com.olunx.util.RealSpeech;
-import com.olunx.util.TtsSpeech;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -24,7 +18,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -32,7 +29,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class TabPreviewShow extends Activity implements OnClickListener {
+import com.olunx.R;
+import com.olunx.stardict.SeekWord;
+import com.olunx.util.Config;
+import com.olunx.util.RealSpeech;
+import com.olunx.util.TtsSpeech;
+
+public class TabPreviewShow extends Activity implements OnClickListener,
+		OnGestureListener {
 
 	private Context context = this;
 
@@ -81,6 +85,9 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 	private int speechType = 0;
 	private boolean isCanSpeech = false;
 
+	private GestureDetector gestureScanner;
+	private boolean isChineseTranslateVisible = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -100,26 +107,27 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		this.setContentView(R.layout.preview);
 		nameTv = (TextView) this.findViewById(R.id.TextView01);
 		phoneticsTv = (TextView) this.findViewById(R.id.TextView02);
-		Typeface font = Typeface.createFromAsset(getAssets(), Config.FONT_KINGSOFT_PATH);
+		Typeface font = Typeface.createFromAsset(getAssets(),
+				Config.FONT_KINGSOFT_PATH);
 		phoneticsTv.setTypeface(font);
 		translationTv = (TextView) this.findViewById(R.id.TextView03);
-		//translationTv.setVisibility(TextView.GONE);
+		translationTv.setVisibility(TextView.GONE);
 		sentsTv = (TextView) this.findViewById(R.id.TextView04);
-		
+		// sentsTv.setOnClickListener(l)
+
 		neverBtn = (Button) this.findViewById(R.id.Button01);
 		neverBtn.setText(NEVERAGAIN);
-		//neverBtn.setOnClickListener(this);
+		// neverBtn.setOnClickListener(this);
 		neverBtn.setVisibility(View.GONE);
-		
-		
+
 		preBtn = (Button) this.findViewById(R.id.ButtonPreWord);
 		preBtn.setText(PREWORD);
 		preBtn.setOnClickListener(this);
-		
+
 		nextBtn = (Button) this.findViewById(R.id.Button02);
 		nextBtn.setText(NEXTWORD);
 		nextBtn.setOnClickListener(this);
-		
+
 		speakBtn = (ImageButton) this.findViewById(R.id.ImageButton01);
 		speakBtn.setOnClickListener(new OnClickListener() {
 			@Override
@@ -148,12 +156,40 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		Bundle i = TabPreviewShow.this.getIntent().getExtras();
 		currentLessonNo = i.getInt("currentLessonNo");
 
+		gestureScanner = new GestureDetector(this);
+		this.gestureScanner.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
+					@Override
+					public boolean onDoubleTap(MotionEvent e) {
+						if (isChineseTranslateVisible) {
+							translationTv.setVisibility(TextView.GONE);
+							isChineseTranslateVisible = false;
+						} else {
+							translationTv.setVisibility(TextView.VISIBLE);
+							isChineseTranslateVisible = true;
+						}
+						return false;
+					}
+					@Override
+					public boolean onDoubleTapEvent(MotionEvent e) {
+						// TODO Auto-generated method stub
+						return false;
+					}
+					@Override
+					public boolean onSingleTapConfirmed(MotionEvent e) {
+						// TODO Auto-generated method stub
+						return false;
+					}
+				});
+		
 		initWords();
+		
 	}
 
 	// 显示单词
 	private void showWord() {
-		this.setTitle(LESSON + " " + (currentLessonNo + 1) + "\t" + REMEMBERTIMES + " " + (currentWordNo + 1) + "/" + totalWordCount);
+		this.setTitle(LESSON + " " + (currentLessonNo + 1) + "\t"
+				+ REMEMBERTIMES + " " + (currentWordNo + 1) + "/"
+				+ totalWordCount);
 
 		// 显示第x个单词
 		currentWord = thisWordList.get(currentWordNo);
@@ -188,18 +224,18 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			ignoreWords.add(this.thisWord);// 当前单词不再记忆
 			this.showNext();
 		}
-		
-		if (text.equals(PREWORD)) {    // 上一个
+
+		if (text.equals(PREWORD)) { // 上一个
 			preBtn.setVisibility(View.VISIBLE);
 			this.showPre();
 		}
-		
+
 		if (text.equals(NEXTWORD)) {// 下一个
-			//neverBtn.setVisibility(View.VISIBLE);
+			// neverBtn.setVisibility(View.VISIBLE);
 			this.showNext();
 		}
 	}
-	
+
 	// 获取词条的详细解释
 	private void getTrans() {
 		if (this.isCanGetTransDict) {
@@ -208,7 +244,8 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 				public void run() {
 					Message msg = new Message();
 					Bundle b = new Bundle();
-					b.putString("translations", seek.getWordTrans(thisWord).get("解释"));
+					b.putString("translations", seek.getWordTrans(thisWord)
+							.get("解释"));
 					msg.setData(b);
 					mHandler.sendMessage(msg);
 				}
@@ -237,7 +274,8 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 				if (thisWordList != null && thisWordList.size() > 0) {
 					totalWordCount = thisWordList.size();
 					// currentWordNo = 0;
-					currentWordNo = Config.init().getPreviewWordIndex(currentLessonNo);// 获取上次记忆的单词位置
+					currentWordNo = Config.init().getPreviewWordIndex(
+							currentLessonNo);// 获取上次记忆的单词位置
 					showWord();
 				}
 			}
@@ -248,7 +286,8 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			@Override
 			public void run() {
 
-				thisWordList = Config.init().getWordsFromFileByLessonNo(currentLessonNo);
+				thisWordList = Config.init().getWordsFromFileByLessonNo(
+						currentLessonNo);
 				totalWordCount = thisWordList.size();
 
 				if (isCanSpeech) {
@@ -257,7 +296,8 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 					switch (speechType) {
 					case Config.SPEECH_TTS: {
 						if (ttsSpeech == null) {
-							ttsSpeech = new TtsSpeech(context, Locale.US).getTts();
+							ttsSpeech = new TtsSpeech(context, Locale.US)
+									.getTts();
 						}
 						break;
 					}
@@ -272,7 +312,8 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 
 				// 初始化详细解释词典
 				if (isCanGetTransDict) {
-					seek = new SeekWord(Config.init().getDictPath(Config.init().getCurrentUseTransDictName()));
+					seek = new SeekWord(Config.init().getDictPath(
+							Config.init().getCurrentUseTransDictName()));
 				}
 
 				pd.dismiss();
@@ -305,7 +346,8 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			currentWordNo--;
 			showWord();
 		} else {
-			Toast.makeText(this, R.string.toast_msg_nothing_front, Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, R.string.toast_msg_nothing_front,
+					Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -324,7 +366,8 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 					if (isCanUpdate) {
 						Log.i("ignoreWords.toString()", ignoreWords.toString());
 						// 更新记忆曲线
-						Config.init().setRememberLine(currentLessonNo, ignoreWords.toString(), true);
+						Config.init().setRememberLine(currentLessonNo,
+								ignoreWords.toString(), true);
 						isCanUpdate = false;
 
 						Config.init().setPreviewWordIndex(currentLessonNo, 0);// 清除本次记忆的单词位置
@@ -336,30 +379,43 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			Log.i("currentLessonNo", String.valueOf(this.currentLessonNo));
 
 			// 询问是否开始下一课的学习
-			new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_info).setTitle(R.string.dialog_title_tip).setMessage(
-					getString(R.string.dialog_msg_is_goto_next_lesson)).setPositiveButton(getString(R.string.btn_yes),
-					new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int arg1) {
-							String lessonCount = Config.init().getLessonCount();
-							if ((currentLessonNo + 1) < Integer.parseInt(lessonCount)) {
-								currentLessonNo++;
-								initWords();
-								neverBtn.setEnabled(true);
-								nextBtn.setEnabled(true);
-							} else {
-								Toast.makeText(context, R.string.toast_msg_no_next_study_lesson, Toast.LENGTH_LONG).show();
-								finish();
-							}
-							dialog.cancel();
-						}
-					}).setNegativeButton(getString(R.string.btn_no), new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					dialog.cancel();
-					finish();
-				}
-			}).show();
+			new AlertDialog.Builder(this)
+					.setIcon(android.R.drawable.ic_dialog_info)
+					.setTitle(R.string.dialog_title_tip)
+					.setMessage(
+							getString(R.string.dialog_msg_is_goto_next_lesson))
+					.setPositiveButton(getString(R.string.btn_yes),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int arg1) {
+									String lessonCount = Config.init()
+											.getLessonCount();
+									if ((currentLessonNo + 1) < Integer
+											.parseInt(lessonCount)) {
+										currentLessonNo++;
+										initWords();
+										neverBtn.setEnabled(true);
+										nextBtn.setEnabled(true);
+									} else {
+										Toast.makeText(
+												context,
+												R.string.toast_msg_no_next_study_lesson,
+												Toast.LENGTH_LONG).show();
+										finish();
+									}
+									dialog.cancel();
+								}
+							})
+					.setNegativeButton(getString(R.string.btn_no),
+							new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									dialog.cancel();
+									finish();
+								}
+							}).show();
 		}
 	}
 
@@ -405,5 +461,52 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 			realSpeech.shutdown();
 		}
 		super.onDestroy();
+	}
+
+	public boolean onTouch(View v, MotionEvent event) {
+		return gestureScanner.onTouchEvent(event);
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		return gestureScanner.onTouchEvent(event);
+	}
+
+	@Override
+	public boolean onDown(MotionEvent e) {
+		//System.out.println("onDown");
+		return false;
+	}
+
+	@Override
+	public void onShowPress(MotionEvent e) {
+	}
+
+	@Override
+	public boolean onSingleTapUp(MotionEvent e) {
+		//System.out.println("onSingleTapUp");
+		return false;
+	}
+
+	@Override
+	public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX,
+			float distanceY) {
+		//System.out.println("onScroll");
+		return false;
+	}
+
+	@Override
+	public void onLongPress(MotionEvent e) {
+		//System.out.println("onLongPress" + e.getEventTime());
+	}
+
+	@Override
+	public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,	float velocityY) {
+                /*
+		 *System.out.println("onFling: " + (e1.getX() - e2.getX()) + " "
+		 *                + (e1.getY() - e2.getY()) + " " + velocityX + " " + velocityY);
+		 *System.out.println(e1.getY());
+                 */
+		return false;
 	}
 }
