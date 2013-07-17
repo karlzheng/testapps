@@ -30,6 +30,7 @@ import com.olunx.MainActivity;
 import com.olunx.db.CsvHelper;
 import com.olunx.db.RememberHelper;
 import com.olunx.option.mandict.GetCsvInfo;
+import com.olunx.option.mandict.GetDictList;
 import com.olunx.option.mandict.GetStarDictInfo;
 
 public class Config {
@@ -182,7 +183,12 @@ public class Config {
 	public boolean isFirstRun() {
 		return Boolean.valueOf(getCon("first_run", "true"));
 	}
-
+	
+	private void setDictCurrentUse(final String dictName) {
+	    Config.init().setCurrentUseDictWordCount(new GetCsvInfo(Config.init().getDictPath(dictName)).getWordCount());
+	    Config.init().setCurrentUseDictName(dictName);
+	    Config.init().cleanRememberLine();
+	}
 	/**
 	 * 复位配置文件
 	 * 
@@ -194,9 +200,9 @@ public class Config {
 		this.setSpeechType(0);
 		this.setEachLessonWordCount("12");// 每课单词数
 		this.setLessonCount("0");// 课程数
-		this.setCurrentUseDictName("");// 记忆词库
+		this.setCurrentUseDictName("gre.csv");// 记忆词库
 		this.setCurrentUseTransDictName("");// 例句词典
-		this.setCanGetTransDict(false);// 是否可用例句词典
+		this.setCanGetTransDict(true);// 是否可用例句词典
 		this.setDictStringArray("", Config.DICTTYPE_CSV);
 		this.setDictStringArray("", Config.DICTTYPE_STARDICT);
 		this.setDictCharset("UTF-8");
@@ -205,6 +211,9 @@ public class Config {
 		this.setCanSpeech(false);
 		this.setFirstRun("true");
 		this.cleanRememberLine();
+		GetDictList gdl = new GetDictList();
+		gdl.getList();
+		this.setDictCurrentUse("gre");
 	}
 
 	/**

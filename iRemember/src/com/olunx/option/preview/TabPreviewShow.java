@@ -103,7 +103,7 @@ public class TabPreviewShow extends Activity implements OnClickListener {
 		Typeface font = Typeface.createFromAsset(getAssets(), Config.FONT_KINGSOFT_PATH);
 		phoneticsTv.setTypeface(font);
 		translationTv = (TextView) this.findViewById(R.id.TextView03);
-		translationTv.setVisibility(TextView.GONE);
+		//translationTv.setVisibility(TextView.GONE);
 		sentsTv = (TextView) this.findViewById(R.id.TextView04);
 		
 		neverBtn = (Button) this.findViewById(R.id.Button01);
