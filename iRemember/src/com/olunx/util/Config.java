@@ -138,8 +138,9 @@ public class Config {
 			String cet4File = "/sdcard/iremember/大学英语四级.csv";
 			String cet6File = "/sdcard/iremember/大学英语六级.csv";
 			String gaokaoFile = "/sdcard/iremember/高考英语词汇.csv";
-			String tuofuFile = "/sdcard/iremember/托福词汇.csv";
+			String tuofuFile = "/sdcard/iremember/tofel.csv";
 			String yasiFile = "/sdcard/iremember/雅思词汇.csv";
+			String greFile = "/sdcard/iremember/gre.csv";
 			
 			//目录说明
 			String soundFile = SDCARD_SOUND_PATH + "读我.txt";
@@ -152,6 +153,7 @@ public class Config {
 			copyOneAssetsFile("dicts/gaokao.csv", gaokaoFile);
 			copyOneAssetsFile("dicts/tofel.csv", tuofuFile);
 			copyOneAssetsFile("dicts/yasi.csv", yasiFile);
+			copyOneAssetsFile("dicts/gre.csv", greFile);
 
 			copyOneAssetsFile("zh-cn/readme_sound.txt", soundFile);
 
