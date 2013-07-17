@@ -190,7 +190,7 @@ public class Config {
 		this.setDictDir(SDCARD_PATH);
 		this.setSoundDir(SDCARD_SOUND_PATH);
 		this.setSpeechType(0);
-		this.setEachLessonWordCount("25");// 每课单词数
+		this.setEachLessonWordCount("12");// 每课单词数
 		this.setLessonCount("0");// 课程数
 		this.setCurrentUseDictName("");// 记忆词库
 		this.setCurrentUseTransDictName("");// 例句词典
