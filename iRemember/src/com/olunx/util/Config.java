@@ -13,6 +13,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,14 +23,14 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.TimeZone;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.olunx.MainActivity;
 import com.olunx.db.CsvHelper;
 import com.olunx.db.RememberHelper;
 import com.olunx.option.mandict.GetCsvInfo;
 import com.olunx.option.mandict.GetStarDictInfo;
-
-import android.content.Context;
-import android.util.Log;
 
 public class Config {
 
@@ -117,6 +118,17 @@ public class Config {
 		return value;
 	}
 
+	public void copyOneAssetsFile(String assetName, String dest) {
+		try {
+			InputStream in = context.getAssets().open(assetName);
+			Utils.init().copyFile(in, dest);			
+			in.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	/**
 	 * 第一次运行，初始化数据。
 	 */
@@ -134,27 +146,24 @@ public class Config {
 			String stardictFile = SDCARD_STARDICT_PATH + "读我.txt";
 			
 			String stardict_babylon_dir = SDCARD_STARDICT_PATH + "stardict-babylon-WordNet-2.4.2/";
-			
-			try {
-				Utils.init().copyFile(context.getAssets().open("dicts/cet4.csv"), cet4File);
-				Utils.init().copyFile(context.getAssets().open("dicts/cet6.csv"), cet6File);
-				Utils.init().copyFile(context.getAssets().open("dicts/gaokao.csv"), gaokaoFile);
-				Utils.init().copyFile(context.getAssets().open("dicts/tofel.csv"), tuofuFile);
-				Utils.init().copyFile(context.getAssets().open("dicts/yasi.csv"), yasiFile);
-				
-				Utils.init().copyFile(context.getAssets().open("zh-cn/readme_sound.txt"), soundFile);
 
-				Utils.init().copyFile(context.getAssets().open("zh-cn/readme_stardict.txt"), stardictFile);
-				
-				Utils.init().copyFile(context.getAssets().open("dicts/stardict-babylon-WordNet-2.4.2/WordNet.syn"), stardict_babylon_dir+"WordNet.syn");
-				Utils.init().copyFile(context.getAssets().open("dicts/stardict-babylon-WordNet-2.4.2/WordNet.ifo"), stardict_babylon_dir+"WordNet.ifo");
-				Utils.init().copyFile(context.getAssets().open("dicts/stardict-babylon-WordNet-2.4.2/WordNet.idx"), stardict_babylon_dir+"WordNet.idx");
-				Utils.init().copyFile(context.getAssets().open("dicts/stardict-babylon-WordNet-2.4.2/WordNet.idx.idx"), stardict_babylon_dir+"WordNet.idx.idx");
-				Utils.init().copyFile(context.getAssets().open("dicts/stardict-babylon-WordNet-2.4.2/WordNet.dict.dz"), stardict_babylon_dir+"WordNet.dict.dz");
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			copyOneAssetsFile("dicts/cet4.csv", cet4File);
+			copyOneAssetsFile("dicts/cet6.csv", cet6File);
+			copyOneAssetsFile("dicts/gaokao.csv", gaokaoFile);
+			copyOneAssetsFile("dicts/tofel.csv", tuofuFile);
+			copyOneAssetsFile("dicts/yasi.csv", yasiFile);
+
+			copyOneAssetsFile("zh-cn/readme_sound.txt", soundFile);
+
+			copyOneAssetsFile("zh-cn/readme_stardict.txt", stardictFile);
+
+                        /*
+			 *copyOneAssetsFile("dicts/stardict-babylon-WordNet-2.4.2/WordNet.syn", stardict_babylon_dir+"WordNet.syn");
+			 *copyOneAssetsFile("dicts/stardict-babylon-WordNet-2.4.2/WordNet.ifo", stardict_babylon_dir+"WordNet.ifo");
+			 *copyOneAssetsFile("dicts/stardict-babylon-WordNet-2.4.2/WordNet.idx", stardict_babylon_dir+"WordNet.idx");
+			 *copyOneAssetsFile("dicts/stardict-babylon-WordNet-2.4.2/WordNet.idx.idx", stardict_babylon_dir+"WordNet.idx.idx");
+			 *copyOneAssetsFile("dicts/stardict-babylon-WordNet-2.4.2/WordNet.dict.dz", stardict_babylon_dir+"WordNet.dict.dz");
+                         */
 
 			this.setDefaultConfig();
 			this.setFirstRun("false");
