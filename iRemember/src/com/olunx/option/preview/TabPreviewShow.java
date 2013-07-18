@@ -24,6 +24,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -85,8 +86,62 @@ public class TabPreviewShow extends Activity implements OnClickListener,
 	private int speechType = 0;
 	private boolean isCanSpeech = false;
 
-	private GestureDetector gestureScanner;
+	private GestureDetector sentsTvGesture;
+	private GestureDetector nameTvGesture;
 	private boolean isChineseTranslateVisible = false;
+	private boolean isPhoneticsTranslateVisible = false;
+
+	private void setGesture() {
+	    sentsTvGesture = new GestureDetector(this);
+	    this.sentsTvGesture.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
+		@Override
+		public boolean onDoubleTap(MotionEvent e) {
+		    if (isChineseTranslateVisible) {
+			translationTv.setVisibility(TextView.GONE);
+			isChineseTranslateVisible = false;
+		    } else {
+			translationTv.setVisibility(TextView.VISIBLE);
+			isChineseTranslateVisible = true;
+		    }
+		    return false;
+		}
+	    @Override
+	    public boolean onDoubleTapEvent(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	    }
+	    @Override
+	    public boolean onSingleTapConfirmed(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	    }
+	    });
+
+	    nameTvGesture = new GestureDetector(this);
+	    this.nameTvGesture.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
+		@Override
+		public boolean onDoubleTap(MotionEvent e) {
+		    if (isPhoneticsTranslateVisible) {
+			phoneticsTv.setVisibility(TextView.GONE);
+			isPhoneticsTranslateVisible = false;
+		    } else {
+			phoneticsTv.setVisibility(TextView.VISIBLE);
+			isPhoneticsTranslateVisible = true;
+		    }
+		    return false;
+		}
+	    @Override
+	    public boolean onDoubleTapEvent(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	    }
+	    @Override
+	    public boolean onSingleTapConfirmed(MotionEvent e) {
+		// TODO Auto-generated method stub
+		return false;
+	    }
+	    });
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +165,7 @@ public class TabPreviewShow extends Activity implements OnClickListener,
 		Typeface font = Typeface.createFromAsset(getAssets(),
 				Config.FONT_KINGSOFT_PATH);
 		phoneticsTv.setTypeface(font);
+		phoneticsTv.setVisibility(TextView.GONE);
 		translationTv = (TextView) this.findViewById(R.id.TextView03);
 		translationTv.setVisibility(TextView.GONE);
 		sentsTv = (TextView) this.findViewById(R.id.TextView04);
@@ -155,34 +211,22 @@ public class TabPreviewShow extends Activity implements OnClickListener,
 		// 获取课程数据
 		Bundle i = TabPreviewShow.this.getIntent().getExtras();
 		currentLessonNo = i.getInt("currentLessonNo");
+		
+		setGesture();
+		nameTv.setOnTouchListener(new OnTouchListener() {
+		    public boolean onTouch(View v, MotionEvent event) {
+			nameTvGesture.onTouchEvent(event);
+			return true;
+		    }
+		});
+		sentsTv.setOnTouchListener(new OnTouchListener() {
+		    public boolean onTouch(View v, MotionEvent event) {
+			sentsTvGesture.onTouchEvent(event);
+			return true;
+		    }
+		});
 
-		gestureScanner = new GestureDetector(this);
-		this.gestureScanner.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
-					@Override
-					public boolean onDoubleTap(MotionEvent e) {
-						if (isChineseTranslateVisible) {
-							translationTv.setVisibility(TextView.GONE);
-							isChineseTranslateVisible = false;
-						} else {
-							translationTv.setVisibility(TextView.VISIBLE);
-							isChineseTranslateVisible = true;
-						}
-						return false;
-					}
-					@Override
-					public boolean onDoubleTapEvent(MotionEvent e) {
-						// TODO Auto-generated method stub
-						return false;
-					}
-					@Override
-					public boolean onSingleTapConfirmed(MotionEvent e) {
-						// TODO Auto-generated method stub
-						return false;
-					}
-				});
-		
 		initWords();
-		
 	}
 
 	// 显示单词
@@ -463,14 +507,16 @@ public class TabPreviewShow extends Activity implements OnClickListener,
 		super.onDestroy();
 	}
 
-	public boolean onTouch(View v, MotionEvent event) {
-		return gestureScanner.onTouchEvent(event);
-	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		return gestureScanner.onTouchEvent(event);
-	}
+/*
+ *        public boolean onTouch(View v, MotionEvent event) {
+ *                return sentsTvGesture.onTouchEvent(event);
+ *        }
+ *
+ *        @Override
+ *        public boolean onTouchEvent(MotionEvent event) {
+ *                return sentsTvGesture.onTouchEvent(event);
+ *        }
+ */
 
 	@Override
 	public boolean onDown(MotionEvent e) {
