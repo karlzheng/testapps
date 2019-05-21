@@ -58,11 +58,14 @@
       <file leaf-file-name="TabPreviewShow.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/olunx/option/preview/TabPreviewShow.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="262">
-              <caret line="29" column="31" lean-forward="true" selection-start-line="29" selection-start-column="31" selection-end-line="29" selection-end-column="31" />
+            <state relative-caret-position="269">
+              <caret line="92" column="4" selection-start-line="92" selection-start-column="4" selection-end-line="92" selection-end-column="4" />
               <folding>
+                <element signature="imports" expanded="true" />
                 <element signature="e#6320#6467#0" expanded="true" />
                 <element signature="e#6466#6467#0" expanded="true" />
+                <element signature="e#8827#8974#0" expanded="true" />
+                <element signature="e#8973#8974#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -2175,13 +2178,13 @@
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="PlantUML" order="3" />
-      <window_info anchor="bottom" id="Android Profiler" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Android Profiler" order="7" />
       <window_info id="Build Variants" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Logcat" order="7" weight="0.41410255" />
+      <window_info active="true" anchor="bottom" id="Logcat" order="7" visible="true" weight="0.41410255" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info anchor="bottom" id="Build" order="7" visible="true" weight="0.32948717" />
+      <window_info anchor="bottom" id="Build" order="7" weight="0.32948717" />
       <window_info id="Structure" order="1" sideWeight="0.50641024" side_tool="true" visible="true" weight="0.29470673" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" id="Device File Explorer" order="3" side_tool="true" />
@@ -2290,8 +2293,11 @@
         <state relative-caret-position="3210">
           <caret line="216" column="47" lean-forward="true" selection-start-line="216" selection-start-column="47" selection-end-line="216" selection-end-column="47" />
           <folding>
+            <element signature="imports" expanded="true" />
             <element signature="e#6320#6467#0" expanded="true" />
             <element signature="e#6466#6467#0" expanded="true" />
+            <element signature="e#8827#8974#0" expanded="true" />
+            <element signature="e#8973#8974#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2351,8 +2357,11 @@
         <state relative-caret-position="7200">
           <caret line="517" column="58" lean-forward="true" selection-start-line="517" selection-start-column="58" selection-end-line="517" selection-end-column="58" />
           <folding>
+            <element signature="imports" expanded="true" />
             <element signature="e#6320#6467#0" expanded="true" />
             <element signature="e#6466#6467#0" expanded="true" />
+            <element signature="e#8827#8974#0" expanded="true" />
+            <element signature="e#8973#8974#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -2466,11 +2475,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/olunx/option/preview/TabPreviewShow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="262">
-          <caret line="29" column="31" lean-forward="true" selection-start-line="29" selection-start-column="31" selection-end-line="29" selection-end-column="31" />
+        <state relative-caret-position="269">
+          <caret line="92" column="4" selection-start-line="92" selection-start-column="4" selection-end-line="92" selection-end-column="4" />
           <folding>
+            <element signature="imports" expanded="true" />
             <element signature="e#6320#6467#0" expanded="true" />
             <element signature="e#6466#6467#0" expanded="true" />
+            <element signature="e#8827#8974#0" expanded="true" />
+            <element signature="e#8973#8974#0" expanded="true" />
           </folding>
         </state>
       </provider>

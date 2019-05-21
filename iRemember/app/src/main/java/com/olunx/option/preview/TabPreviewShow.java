@@ -27,6 +27,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,9 +89,12 @@ public class TabPreviewShow extends Activity implements OnClickListener,
 
 	private GestureDetector sentsTvGesture;
 	private GestureDetector nameTvGesture;
+	private GestureDetector scrollViewGesture;
+
 	private boolean isChineseTranslateVisible = false;
 	private boolean isPhoneticsTranslateVisible = false;
 
+	private ScrollView scrollView;
 	private void setGesture() {
 	    sentsTvGesture = new GestureDetector(this);
 	    this.sentsTvGesture.setOnDoubleTapListener(new GestureDetector.OnDoubleTapListener() {
@@ -224,6 +228,70 @@ public class TabPreviewShow extends Activity implements OnClickListener,
 			sentsTvGesture.onTouchEvent(event);
 			return true;
 		    }
+		});
+		
+		scrollViewGesture = new GestureDetector(this, new OnGestureListener() {
+
+            @Override
+            public boolean onSingleTapUp(MotionEvent e) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+            @Override
+            public void onShowPress(MotionEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+
+            @Override
+            public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+                // TODO Auto-generated method stub
+
+            }
+
+            /**
+             *
+             * e1 The first down motion event that started the fling. e2 The
+             * move motion event that triggered the current onFling.
+             */
+            @Override
+            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                final int FLIP_DISTANCE = 200;
+				Log.d("MYTAG", "" + e1.getX()  + " " + e2.getX() + " " + e1.getY() + " " + e2.getY() + " " + velocityX + " " + velocityY);
+				boolean yaxis_is_static = (Math.abs(e1.getY() -  e2.getY()) < FLIP_DISTANCE);
+                if (yaxis_is_static && (e1.getX() - e2.getX() > FLIP_DISTANCE) && (Math.abs(velocityX) > 500)) {
+                    Log.i("MYTAG", "向左滑...");
+					showNext();
+                    return true;
+                }
+                if (yaxis_is_static && e2.getX() - e1.getX() > FLIP_DISTANCE  && Math.abs(velocityX) > 500) {
+                    Log.i("MYTAG", "向右滑...");
+					showPre();
+                    return true;
+                }
+
+                return false;
+            }
+
+            @Override
+            public boolean onDown(MotionEvent e) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+        });
+
+		scrollView = (ScrollView) this.findViewById(R.id.ScrollView02);
+		scrollView.setOnTouchListener(new OnTouchListener() {
+			@Override public boolean onTouch(View v, MotionEvent event) {
+				return scrollViewGesture.onTouchEvent(event);
+			}
 		});
 
 		initWords();
